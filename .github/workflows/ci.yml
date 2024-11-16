@@ -3,7 +3,22 @@ name: Cypress Tests
 on: push
 
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: npm install
+      - name: Save node_modules folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: node_modules
+          if-no-files-found: error
+          path: node_modules
+
   cypress-tests:
+    needs: install
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -11,8 +26,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Install Dependencies
-        run: npm install
+      - name: Download node_modules folder
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
