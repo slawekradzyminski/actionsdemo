@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Install Dependencies
         run: npm install
       - name: Save node_modules folder
@@ -33,6 +37,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node_modules
+      - name: Checkout external repository
+        uses: actions/checkout@v4
+        with:
+          repository: "slawekradzyminski/awesome-localstack"
+          path: "awesome-localstack"
+      - name: Run Docker Compose
+        run: |
+          cd awesome-localstack
+          chmod +x run-docker-compose-ci.sh
+          ./run-docker-compose-ci.sh
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
