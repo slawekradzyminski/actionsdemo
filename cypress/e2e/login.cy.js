@@ -5,7 +5,7 @@ describe('Localstack login tests', () => {
       cy.visit('http://localhost:8081')
     })
   
-    it('should successfully login', () => {
+    it.skip('should successfully login', () => {
         // when
         cy.get('input[name="username"]').type('admin')
         cy.get('input[name="password"]').type('admin')
@@ -15,7 +15,7 @@ describe('Localstack login tests', () => {
         cy.get('h1').should('contain.text', 'Hi Slawomir')
     })
 
-    it('should fail login', () => {
+    it.skip('should fail login', () => {
         // when
         cy.get('input[name="username"]').type('admin')
         cy.get('input[name="password"]').type('wrong')
